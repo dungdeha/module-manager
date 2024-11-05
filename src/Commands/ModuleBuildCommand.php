@@ -199,6 +199,11 @@ class ModuleBuildCommand extends Command
                 $filePath = str_replace('stubService.php', $value, $filePath);
                 break;
 
+            case 'enum_status':
+                $value = $moduleName.'Status.php';
+                $filePath = str_replace('stubStatus.php', $value, $filePath);
+                break;
+
             case 'providers':
                 $value = $moduleName.'ServiceProvider.php';
                 $filePath = str_replace('stubServiceProvider.php', $value, $filePath);

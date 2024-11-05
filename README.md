@@ -7,7 +7,7 @@
 You can install the package via Composer:
 
 ```bash
-composer require dungdeha/module-manager
+composer require dungdeha/module-manager:dev-main
 ```
 
 After installing the package, you need to publish the config file and the module stub files. You can do this by running the following command:

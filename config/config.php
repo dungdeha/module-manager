@@ -26,7 +26,7 @@ return [
             'factories' => ['database/factories/stubFactory.stub', 'database/factories/stubFactory.php', 'rename'],
             'seeders' => ['database/seeders/stubSeeders.stub', 'database/seeders/stubSeeders.php', 'rename'],
             'command' => ['Console/Commands/StubCommand.stub', 'Console/Commands/StubCommand.php', 'rename'],
-            'enum_status' => ['Enums/stubStatus.stub', 'Enums/stubStatus.php', 'rename'],
+            'enum_status' => ['Enums/stubStatus.stub', 'Enums/stubStatus.php'],
             'lang' => ['lang/en/text.stub', 'lang/en/text.php'],
             'lang_ja' => ['lang/ja/text.stub', 'lang/ja/text.php'],
             'models' => ['Models/stubModel.stub', 'Models/stubModel.php'],
