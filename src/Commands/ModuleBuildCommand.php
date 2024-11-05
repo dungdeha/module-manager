@@ -204,6 +204,16 @@ class ModuleBuildCommand extends Command
                 $filePath = str_replace('stubStatus.php', $value, $filePath);
                 break;
 
+            case 'request_store_backend':
+                $value = 'Store'.$moduleName.'Request.php';
+                $filePath = str_replace('StorestubRequest.php', $value, $filePath);
+                break;
+
+            case 'request_update_backend':
+                $value = 'Update'.$moduleName.'Request.php';
+                $filePath = str_replace('UpdatestubRequest.php', $value, $filePath);
+                break;
+
             case 'providers':
                 $value = $moduleName.'ServiceProvider.php';
                 $filePath = str_replace('stubServiceProvider.php', $value, $filePath);
