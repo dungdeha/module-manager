@@ -1,0 +1,27 @@
+<?php
+
+namespace Feature\Backend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+use Tests\TestCase;
+
+class Show{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_guest_cannot_access_{{moduleNameLower}}_detail_page()
+    {
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $this->get('admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id)->assertRedirect('/login');
+    }
+
+    public function test_admin_can_view_{{moduleNameLower}}_data()
+    {
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $response = $this->get('admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id);
+        $response->assertSee(${{moduleNameLower}}->name);
+        $response->assertSee(${{moduleNameLower}}->description);
+    }
+}

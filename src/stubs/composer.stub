@@ -1,0 +1,24 @@
+{
+    "name": "dungdeha/{{moduleNameLower}}",
+    "description": "",
+    "type": "laravel-module",
+    "authors": [
+        {
+            "name": "EDION",
+            "email": "edion@deha-soft.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\{{moduleName}}\\": ""
+        }
+    }
+}

@@ -1,0 +1,22 @@
+<?php
+
+namespace Modules\{{moduleName}}\Tests\Feature\Frontend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+use Tests\TestCase;
+
+class Detail{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_{{moduleNameLower}}_detail_page(): void
+    {
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $detailsUrl = route('frontend.{{moduleNameLowerPlural}}.show', [encode_id(${{moduleNameLower}}->id), ${{moduleNameLower}}->slug]);
+        $response = $this->get($detailsUrl);
+        $response->assertStatus(200);
+        $response->assertSeeText(${{moduleNameLower}}->name);
+        $response->assertSeeText(${{moduleNameLower}}->description);
+    }
+}

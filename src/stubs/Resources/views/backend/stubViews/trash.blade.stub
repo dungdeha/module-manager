@@ -1,0 +1,23 @@
+@extends("backend.layouts.app")
+
+@section("title")
+    {{ __($moduleAction) }} {{ __($moduleTitle) }}
+@endsection
+
+@section("breadcrumbs")
+    <x-backend.breadcrumbs>
+        <x-backend.breadcrumb-item type="active" icon="{{ $moduleIcon }}">
+            {{ __($moduleTitle) }}
+        </x-backend.breadcrumb-item>
+    </x-backend.breadcrumbs>
+@endsection
+
+@section("content")
+    <x-backend.layouts.trash
+        :data="$$moduleName"
+        :moduleName="$moduleName"
+        :modulePath="$modulePath"
+        :moduleTitle="$moduleTitle"
+        :moduleIcon="$moduleIcon"
+    />
+@endsection

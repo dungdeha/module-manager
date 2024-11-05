@@ -1,0 +1,107 @@
+<?php
+
+namespace Modules\{{moduleName}}\Services;
+
+use App\Exceptions\GeneralException;
+use App\Services\BaseService;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+
+/**
+ * Class {{moduleName}}Service.
+ */
+class {{moduleName}}Service extends BaseService
+{
+    /**
+     * {{moduleName}}Service constructor.
+     */
+    public function __construct({{moduleName}} ${{moduleNameLower}})
+    {
+        $this->model = ${{moduleNameLower}};
+    }
+
+    /**
+     * @throws GeneralException
+     * @throws \Throwable
+     */
+    public function store(Request $request, $moduleName): {{moduleName}}
+    {
+        DB::beginTransaction();
+
+        try {
+            $data = $request->except('image', '_token');
+            ${{moduleNameLower}} = $this->model->create($data);
+            $this->uploadImage($request, ${{moduleNameLower}}, $moduleName);
+        } catch (Exception $e) {
+            logError($e);
+            DB::rollBack();
+            throw new GeneralException;
+        }
+        DB::commit();
+
+        return ${{moduleNameLower}};
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function update(Request $request, $id, $moduleName): {{moduleName}}
+    {
+        DB::beginTransaction();
+        try {
+            ${{moduleNameLower}} = $this->model->findOrFail($id);
+            if (${{moduleNameLower}}) {
+                $data = $request->except('image', 'image_remove', '_token');
+                ${{moduleNameLower}}->update($data);
+                $this->uploadImage($request, ${{moduleNameLower}}, $moduleName);
+            }
+        } catch (Exception $e) {
+            logError($e);
+            DB::rollBack();
+            throw new GeneralException;
+        }
+        DB::commit();
+
+        return ${{moduleNameLower}};
+    }
+
+    /**
+     * Upload image
+     */
+    public function uploadImage($request, ${{moduleNameLower}}, $collection): bool
+    {
+        if ($request->hasFile('image')) {
+            if (${{moduleNameLower}}->getMedia($collection)->first()) {
+                ${{moduleNameLower}}->getMedia($collection)->first()->delete();
+            }
+            $media = ${{moduleNameLower}}->addMedia($request->file('image'))->toMediaCollection($collection);
+            ${{moduleNameLower}}->image = $media->file_name;
+            ${{moduleNameLower}}->save();
+        }
+        if ($request->image_remove === 'image_remove') {
+            if (${{moduleNameLower}}->getMedia($collection)->first()) {
+                ${{moduleNameLower}}->getMedia($collection)->first()->delete();
+                ${{moduleNameLower}}->image = '';
+                ${{moduleNameLower}}->save();
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return {{moduleName}}
+     *
+     * @throws GeneralException
+     */
+    public function delete({{moduleName}} ${{moduleNameLower}}): bool
+    {
+        if ($this->deleteById(${{moduleNameLower}}->id)) {
+            return true;
+        }
+
+        return false;
+    }
+}

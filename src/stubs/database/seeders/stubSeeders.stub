@@ -1,0 +1,29 @@
+<?php
+
+namespace Modules\{{moduleName}}\database\seeders;
+
+use Database\Seeders\Traits\DisableForeignKeys;
+use Database\Seeders\Traits\TruncateTable;
+use Illuminate\Database\Seeder;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+
+class {{moduleName}}DatabaseSeeder extends Seeder
+{
+    use DisableForeignKeys, TruncateTable;
+
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->disableForeignKeys();
+
+        $this->truncate('{{moduleNameLowerPlural}}');
+
+        {{moduleName}}::factory()->count(20)->create();
+
+        $this->enableForeignKeys();
+    }
+}

@@ -1,0 +1,22 @@
+<?php
+
+namespace Modules\{{moduleName}}\Tests\Feature\Backend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class List{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_guest_cannot_access_{{moduleNameLower}}_list_page()
+    {
+        $this->get('admin/{{moduleNameLowerPlural}}')->assertRedirect('/login');
+    }
+
+    public function test_admin_can_view_{{moduleNameLower}}_data()
+    {
+        $this->loginAsSuperAdmin();
+        $this->get('admin/{{moduleNameLowerPlural}}')->assertOk();
+    }
+}

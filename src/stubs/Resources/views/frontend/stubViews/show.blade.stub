@@ -1,0 +1,36 @@
+@extends("frontend.layouts.app")
+
+@section("title")
+    {{ $$moduleNameSingular->name }} - {{ __($moduleTitle) }}
+@endsection
+
+@section("content")
+    <section class="bg-gray-100 py-10 text-gray-600 sm:py-20">
+        <div class="container mx-auto flex flex-col items-center justify-center px-5">
+            <div class="w-full text-center lg:w-2/3">
+                <p class="mb-8 leading-relaxed">
+                    <a
+                        href="{{ route("frontend." . $moduleName . ".index") }}"
+                        class="mr-2 rounded bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-800 outline outline-1 outline-gray-800 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300"
+                    >
+                        {{ __($moduleTitle) }}
+                    </a>
+                </p>
+                <h1 class="mb-4 text-3xl font-medium text-gray-800 sm:text-4xl">
+                    {{ $$moduleNameSingular->name }}
+                </h1>
+                <p class="mb-8 leading-relaxed">
+                    {{ $$moduleNameSingular->description }}
+                </p>
+
+                @include("frontend.includes.messages")
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white p-6 text-gray-600 sm:p-20">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>Content area.</div>
+        </div>
+    </section>
+@endsection

@@ -1,0 +1,20 @@
+<?php
+
+namespace Modules\{{moduleName}}\Tests\Feature\Frontend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+use Tests\TestCase;
+
+class List{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_{{moduleNameLower}}_list_page(): void
+    {
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $response = $this->get('/{{moduleNameLowerPlural}}/');
+        $response->assertStatus(200);
+        $response->assertSeeText(${{moduleNameLower}}->name);
+    }
+}

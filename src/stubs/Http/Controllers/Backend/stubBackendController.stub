@@ -1,0 +1,84 @@
+<?php
+
+namespace Modules\{{moduleName}}\Http\Controllers\Backend;
+
+use App\Authorizable;
+use App\Http\Controllers\Backend\BackendBaseController;
+use Illuminate\Support\Str;
+use Modules\{{moduleName}}\Http\Requests\Backend\Store{{moduleName}}Request;
+use Modules\{{moduleName}}\Http\Requests\Backend\Update{{moduleName}}Request;
+use Modules\{{moduleName}}\Services\{{moduleName}}Service;
+
+class {{moduleNamePlural}}Controller extends BackendBaseController
+{
+    use Authorizable;
+
+    protected ${{moduleNameLower}}Service;
+
+    public function __construct({{moduleName}}Service ${{moduleNameLower}}Service)
+    {
+        $this->{{moduleNameLower}}Service = ${{moduleNameLower}}Service;
+
+        // Page Title
+        $this->moduleTitle = '{{moduleNamePlural}}';
+
+        // module name
+        $this->moduleName = '{{moduleNameLowerPlural}}';
+
+        // directory path of the module
+        $this->modulePath = '{{moduleNameLower}}::backend';
+
+        // module icon
+        $this->moduleIcon = 'fa-regular fa-sun';
+
+        // module model name, path
+        $this->moduleModel = "Modules\{{moduleName}}\Models\{{moduleName}}";
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(Store{{moduleName}}Request $request)
+    {
+        $moduleTitle = $this->moduleTitle;
+        $moduleName = $this->moduleName;
+        $moduleModel = $this->moduleModel;
+        $moduleNameSingular = Str::singular($moduleName);
+        $moduleAction = 'Store';
+
+        $$moduleNameSingular = $this->{{moduleNameLower}}Service->store($request, $this->moduleName);
+
+        flash('New '.Str::singular($moduleTitle).' Added')->success()->important();
+
+        logUserAccess($moduleTitle.' '.$moduleAction.' | Id: '.$$moduleNameSingular->id);
+
+        return redirect("admin/{$moduleName}");
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(Update{{moduleName}}Request $request, $id)
+    {
+        $moduleTitle = $this->moduleTitle;
+        $moduleName = $this->moduleName;
+        $modulePath = $this->modulePath;
+        $moduleIcon = $this->moduleIcon;
+        $moduleModel = $this->moduleModel;
+        $moduleNameSingular = Str::singular($moduleName);
+
+        $moduleAction = 'Update';
+
+        $$moduleNameSingular = $this->{{moduleNameLower}}Service->update($request, $id, $this->moduleName);
+        flash(Str::singular($moduleTitle).' Updated Successfully')->success()->important();
+
+        logUserAccess($moduleTitle.' '.$moduleAction.' | Id: '.$$moduleNameSingular->id);
+
+        return redirect()->route("backend.{$moduleName}.show", $$moduleNameSingular->id);
+    }
+}

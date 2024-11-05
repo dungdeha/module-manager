@@ -1,0 +1,64 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+/*
+*
+* Frontend Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::group(['namespace' => '\Modules\{{moduleName}}\Http\Controllers\Frontend', 'as' => 'frontend.', 'middleware' => 'web', 'prefix' => ''], function () {
+
+    /*
+     *
+     *  Frontend {{moduleNamePlural}} Routes
+     *
+     * ---------------------------------------------------------------------
+     */
+    $moduleName = '{{moduleNameLowerPlural}}';
+    $controllerName = '{{moduleNamePlural}}Controller';
+    Route::get("$moduleName", ['as' => "$moduleName.index", 'uses' => "$controllerName@index"]);
+    Route::get("$moduleName/{id}/{slug?}", ['as' => "$moduleName.show", 'uses' => "$controllerName@show"]);
+});
+
+/*
+*
+* Backend Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::group(['namespace' => '\Modules\{{moduleName}}\Http\Controllers\Backend', 'as' => 'backend.', 'middleware' => ['web', 'auth', 'can:view_backend'], 'prefix' => 'admin'], function () {
+    /*
+    * These routes need view-backend permission
+    * (good if you want to allow more than one group in the backend,
+    * then limit the backend features by different roles or permissions)
+    *
+    * Note: Administrator has all permissions so you do not have to specify the administrator role everywhere.
+    */
+
+    /*
+     *
+     *  Backend {{moduleNamePlural}} Routes
+     *
+     * ---------------------------------------------------------------------
+     */
+    $moduleName = '{{moduleNameLowerPlural}}';
+    $controllerName = '{{moduleNamePlural}}Controller';
+    Route::get("$moduleName/index_list", ['as' => "$moduleName.index_list", 'uses' => "$controllerName@index_list"]);
+    Route::get("$moduleName/index_data", ['as' => "$moduleName.index_data", 'uses' => "$controllerName@index_data"]);
+    Route::get("$moduleName/trashed", ['as' => "$moduleName.trashed", 'uses' => "$controllerName@trashed"]);
+    Route::patch("$moduleName/trashed/{id}", ['as' => "$moduleName.restore", 'uses' => "$controllerName@restore"]);
+    Route::resource("$moduleName", "$controllerName");
+});

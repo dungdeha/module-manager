@@ -1,0 +1,63 @@
+<?php
+
+namespace Modules\{{moduleName}}\Tests\Feature\Backend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Modules\{{moduleName}}\Enums\{{moduleName}}Status;
+use Tests\TestCase;
+
+class Create{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function test_not_authorized_users_cant_access_create_{{moduleNameLower}}_page()
+    {
+        $response = $this->post('/admin/{{moduleNameLowerPlural}}', []);
+        $response->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function test_admin_can_access_create_{{moduleNameLower}}_page()
+    {
+        $this->loginAsSuperAdmin();
+        $this->get('/admin/{{moduleNameLowerPlural}}')->assertOk();
+    }
+
+    /** @test */
+    public function test_store_{{moduleNameLower}}_successfully()
+    {
+        Storage::fake('public');
+        $this->loginAsSuperAdmin();
+        $response = $this->post('admin/{{moduleNameLowerPlural}}', [
+            '_token' => csrf_token(),
+            'name' => 'Test',
+            'slug' => 'test',
+            'description' => 'Test Description',
+            'image' => UploadedFile::fake()->image('{{moduleNameLower}}.jpg'),
+            'status' => {{moduleName}}Status::Active->value,
+        ]);
+
+        $response->assertRedirect('admin/{{moduleNameLowerPlural}}');
+        $this->assertDatabaseHas('{{moduleNameLowerPlural}}', [
+            'name' => 'Test',
+            'slug' => 'test',
+            'description' => 'Test Description',
+            'status' => {{moduleName}}Status::Active->value,
+        ]);
+    }
+
+    /** @test */
+    public function test_store_{{moduleNameLower}}_fails_due_to_validation_errors()
+    {
+        $this->loginAsSuperAdmin();
+        $response = $this->post('admin/{{moduleNameLowerPlural}}', ['_token' => csrf_token()]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'name', 'status',
+        ]);
+    }
+}

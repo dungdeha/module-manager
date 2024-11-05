@@ -1,0 +1,69 @@
+<?php
+
+namespace Modules\{{moduleName}}\Tests\Feature\Backend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Modules\{{moduleName}}\Enums\{{moduleName}}Status;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+use Tests\TestCase;
+
+class Edit{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function test_not_authorized_users_cant_access_edit_{{moduleNameLower}}_page()
+    {
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $response = $this->get('/admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id.'/edit');
+        $response->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function test_admin_can_access_edit_{{moduleNameLower}}_page()
+    {
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $this->get('/admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id.'/edit')->assertOk();
+    }
+
+    /** @test */
+    public function test_update_{{moduleNameLower}}_successfully()
+    {
+        Storage::fake('public');
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $response = $this->put('/admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id, [
+            '_token' => csrf_token(),
+            'name' => 'Test',
+            'slug' => 'test',
+            'description' => 'Test Description',
+            'image' => UploadedFile::fake()->image('{{moduleNameLower}}.jpg'),
+            'status' => {{moduleName}}Status::Draft->value,
+        ]);
+
+        $response->assertRedirect('/admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id);
+        $this->assertDatabaseHas('{{moduleNameLowerPlural}}', [
+            'id' => ${{moduleNameLower}}->id,
+            'name' => 'Test',
+            'slug' => 'test',
+            'description' => 'Test Description',
+            'image' => '{{moduleNameLower}}.jpg',
+            'status' => {{moduleName}}Status::Draft->value,
+        ]);
+    }
+
+    /** @test */
+    public function test_update_{{moduleNameLower}}_fails_due_to_validation_errors()
+    {
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+        $response = $this->put('/admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id, ['_token' => csrf_token()]);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'name', 'status',
+        ]);
+    }
+}

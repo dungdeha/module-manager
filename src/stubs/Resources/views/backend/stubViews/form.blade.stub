@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-12 col-sm-4 mb-3">
+        <div class="form-group">
+            <?php
+            $fieldName = "name";
+            $fieldLabel = label_case($fieldName);
+            $fieldPlaceholder = $fieldLabel;
+            $required = "required";
+            ?>
+
+            {{ html()->label($fieldLabel, $fieldName)->class("form-label") }} {!! field_required($required) !!}
+            {{ html()->text($fieldName)->placeholder($fieldPlaceholder)->class("form-control")->attributes(["$required"]) }}
+        </div>
+    </div>
+    <div class="col-12 col-sm-4 mb-3">
+        <div class="form-group">
+            <?php
+            $fieldName = "slug";
+            $fieldLabel = label_case($fieldName);
+            $fieldPlaceholder = $fieldLabel;
+            $required = "";
+            ?>
+
+            {{ html()->label($fieldLabel, $fieldName)->class("form-label") }} {!! field_required($required) !!}
+            {{ html()->text($fieldName)->placeholder($fieldPlaceholder)->class("form-control")->attributes(["$required"]) }}
+        </div>
+    </div>
+    <div class="col-12 col-sm-4 mb-3">
+        <div class="form-group">
+            <?php
+            $fieldName = "status";
+            $fieldLabel = label_case($fieldName);
+            $fieldPlaceholder = "-- Select an option --";
+            $required = "required";
+            $selectOptions = \Modules\{{moduleName}}\Enums\{{moduleName}}Status::keyVal();
+            ?>
+
+            {{ html()->label($fieldLabel, $fieldName)->class("form-label") }} {!! field_required($required) !!}
+            {{
+                html()
+                    ->select($fieldName, $selectOptions)
+                    ->placeholder($fieldPlaceholder)
+                    ->class("form-control select2")
+                    ->attributes(["$required"])
+                    ->value(\Modules\{{moduleName}}\Enums\{{moduleName}}Status::Active->value)
+            }}
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-8">
+        <div class="form-group">
+            <?php
+            $fieldName = "image";
+            $fieldLabel = label_case($fieldName);
+            $fieldPlaceholder = $fieldLabel;
+            $required = "";
+            ?>
+
+            {{ html()->label($fieldLabel, $fieldName)->class("form-label") }} {!! field_required($required) !!}
+            {{ html()->input("file", $fieldName)->class("form-control")->attributes(["$required"]) }}
+        </div>
+    </div>
+
+    @if ($data && $data->getMedia($moduleName)->first())
+        <div class="col-4">
+            <div class="float-end">
+                <figure class="figure">
+                    <a
+                        href="{{ getMediaThumb($data, $moduleName, "medium") }}"
+                        data-lightbox="image-set"
+                        data-title="Path: {{ $data->$fieldName }}"
+                    >
+                        <img
+                            src="{{ getMediaThumb($data, $moduleName, "small") }}"
+                            class="figure-img img-fluid img-thumbnail rounded"
+                            alt=""
+                        />
+                    </a>
+                </figure>
+                <div class="form-check">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value="image_remove"
+                        id="image_remove"
+                        name="image_remove"
+                    />
+                    <label class="form-check-label" for="image_remove">Remove this image</label>
+                </div>
+            </div>
+        </div>
+        <x-library.lightbox />
+    @endif
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <div class="form-group">
+            <?php
+            $fieldName = "description";
+            $fieldLabel = label_case($fieldName);
+            $fieldPlaceholder = $fieldLabel;
+            $required = "";
+            ?>
+
+            {{ html()->label($fieldLabel, $fieldName)->class("form-label") }} {!! field_required($required) !!}
+            {{ html()->textarea($fieldName)->placeholder($fieldPlaceholder)->class("form-control")->attributes(["$required"]) }}
+        </div>
+    </div>
+</div>
+
+<x-library.select2 />

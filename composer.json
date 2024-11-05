@@ -1,0 +1,51 @@
+{
+  "name": "dungdeha/module-manager",
+  "description": "Module Manager & Generator for laravel project",
+  "keywords": [
+    "module-manager",
+    "laravel-starter",
+    "module-generator"
+  ],
+  "homepage": "https://deha-soft.com",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "DungDD",
+      "email": "dungdd@deha-soft.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "laravel/framework": "^v11.0"
+  },
+  "require-dev": {},
+  "autoload": {
+    "psr-4": {
+      "Dungdeha\\ModuleManager\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Dungdeha\\ModuleManager\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Dungdeha\\ModuleManager\\ModuleManagerServiceProvider"
+      ],
+      "aliases": {
+        "ModuleManager": "Dungdeha\\ModuleManager\\ModuleManagerFacade"
+      }
+    }
+  }
+}

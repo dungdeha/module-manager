@@ -1,0 +1,61 @@
+<?php
+
+namespace Modules\{{moduleName}}\Http\Requests\Backend;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\{{moduleName}}\Enums\{{moduleName}}Status;
+
+/**
+ * Class Update{{moduleName}}Request.
+ */
+class Update{{moduleName}}Request extends FormRequest
+{
+    /**
+     * Check role and permission
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'Ja:Name',
+            'slug' => 'Ja:Slug',
+            'image' => 'Ja:Image',
+            'description' => 'Ja:Description',
+            'status' => 'Ja:Status',
+        ];
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'name' => 'required|max:191',
+            'slug' => 'nullable|max:191|unique:{{moduleNameLowerPlural}},slug,'.request()->route('{{moduleNameLower}}'),
+            'image' => ['nullable', 'mimes:jpg,heic,tiff,jpeg,png', 'max:'.config('const.IMAGE_MAX_UPLOAD'),
+            ],
+            'description' => 'nullable',
+            'status' => ['required', Rule::in({{moduleName}}Status::getAllValues())],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+
+        ];
+    }
+}
