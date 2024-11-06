@@ -2,14 +2,11 @@
 
 namespace Modules\{{moduleName}}\Helpers;
 
-if (! function_exists('get{{moduleName}}ModuleName')) {
+if (! function_exists('getSchoolModuleName')) {
     /**
      * Get module name
-     *
-     * @param string $type
-     * @return string
      */
-    function get{{moduleName}}ModuleName(string $type = ''): string
+    function getSchoolModuleName(string $type = ''): string
     {
         return match ($type) {
             'lower' => '{{moduleNameLower}}',
