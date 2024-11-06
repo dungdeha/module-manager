@@ -34,6 +34,7 @@ return [
             'helper' => ['Helpers/stubHelper.stub', 'Helpers/stubHelper.php'],
             'providersRoute' => ['Providers/RouteServiceProvider.stub', 'Providers/RouteServiceProvider.php'],
             'providersEvent' => ['Providers/EventServiceProvider.stub', 'Providers/EventServiceProvider.php'],
+            'providersHelper' => ['Providers/HelperServiceProvider.stub', 'Providers/HelperServiceProvider.php'],
             'providers' => ['Providers/stubServiceProvider.stub', 'Providers/stubServiceProvider.php'],
             'route_web' => ['routes/web.stub', 'routes/web.php'],
             'route_api' => ['routes/api.stub', 'routes/api.php'],

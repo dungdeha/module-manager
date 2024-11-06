@@ -32,6 +32,8 @@ class {{moduleName}}ServiceProvider extends ServiceProvider
 
         // register commands
         $this->registerCommands('\Modules\{{moduleName}}\Console\Commands');
+
+        $this->app->register(HelperServiceProvider::class);
     }
 
     /**

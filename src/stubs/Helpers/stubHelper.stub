@@ -12,10 +12,10 @@ if (! function_exists('get{{moduleName}}ModuleName')) {
     function get{{moduleName}}ModuleName(string $type = ''): string
     {
         return match ($type) {
-            'lower' => {{moduleNameLower}},
-            'lower.plural' => {{moduleNameLowerPlural}},
-            'plural' => {{moduleNamePlural}},
-            '' => {{moduleName}},
+            'lower' => '{{moduleNameLower}}',
+            'lower.plural' => '{{moduleNameLowerPlural}}',
+            'plural' => '{{moduleNamePlural}}',
+            '' => '{{moduleName}}',
         };
     }
 }
