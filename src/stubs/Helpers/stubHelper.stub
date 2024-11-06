@@ -1,0 +1,21 @@
+<?php
+
+namespace Modules\{{moduleName}}\Helpers;
+
+if (! function_exists('get{{moduleName}}ModuleName')) {
+    /**
+     * Get module name
+     *
+     * @param string $type
+     * @return string
+     */
+    function get{{moduleName}}ModuleName(string $type = ''): string
+    {
+        return match ($type) {
+            'lower' => {{moduleNameLower}},
+            'lower.plural' => {{moduleNameLowerPlural}},
+            'plural' => {{moduleNamePlural}},
+            '' => {{moduleName}},
+        };
+    }
+}

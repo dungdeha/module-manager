@@ -199,6 +199,36 @@ class ModuleBuildCommand extends Command
                 $filePath = str_replace('stubService.php', $value, $filePath);
                 break;
 
+            case 'helper':
+                $value = $moduleName.'Helper.php';
+                $filePath = str_replace('stubHelper.php', $value, $filePath);
+                break;
+
+            case 'test_feature_backend_list':
+                $value = 'List'.$moduleName.'Test.php';
+                $filePath = str_replace('ListstubTest.php', $value, $filePath);
+                break;
+
+            case 'test_feature_backend_create':
+                $value = 'Create'.$moduleName.'Test.php';
+                $filePath = str_replace('CreatestubTest.php', $value, $filePath);
+                break;
+
+            case 'test_feature_backend_edit':
+                $value = 'Edit'.$moduleName.'Test.php';
+                $filePath = str_replace('EditstubTest.php', $value, $filePath);
+                break;
+
+            case 'test_feature_frontend_list':
+                $value = 'List'.$moduleName.'Test.php';
+                $filePath = str_replace('ListstubTest.php', $value, $filePath);
+                break;
+
+            case 'test_feature_frontend_detail':
+                $value = 'Detail'.$moduleName.'Test.php';
+                $filePath = str_replace('DetailstubTest.php', $value, $filePath);
+                break;
+
             case 'enum_status':
                 $value = $moduleName.'Status.php';
                 $filePath = str_replace('stubStatus.php', $value, $filePath);
