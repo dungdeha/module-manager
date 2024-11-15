@@ -23,6 +23,36 @@ class {{moduleName}}Service extends BaseService
     }
 
     /**
+     * @return mixed
+     *
+     * @throws GeneralException
+     */
+    public function get{{moduleNamePlural}}(Request $request)
+    {
+        try {
+            $perPage = array_key_exists(request()->per_page, PAGINATOR_PER_PAGE) ?
+                request()->per_page :
+                PER_PAGE_DEFAULT;
+            $orderBy = $request->order_by ?? [];
+
+            ${{moduleNameLowerPlural}} = $this->model::query()
+                ->filterByName($request->name ?? null)
+                ->filterByStatus($request->status ?? null)
+                ->when(! empty($orderBy) && is_array($orderBy), function ($q) use ($orderBy) {
+                    foreach ($orderBy as $field => $direction) {
+                        $q->orderBy($field, $direction);
+                    }
+                })
+                ->paginate($perPage);
+        } catch (Exception $e) {
+            logError($e);
+            throw new GeneralException;
+        }
+
+        return ${{moduleNameLowerPlural}};
+    }
+
+    /**
      * @throws GeneralException
      * @throws \Throwable
      */

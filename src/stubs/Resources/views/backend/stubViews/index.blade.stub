@@ -13,61 +13,40 @@
 @endsection
 
 @section("content")
-    <div class="card">
+    <div class="card mb-4 border-0">
         <div class="card-body">
-            <x-backend.section-header>
-                <i class="{{ $moduleIcon }}"></i>
-                {{ __($moduleTitle) }}
-                <small class="text-muted">{{ __($moduleAction) }}</small>
+            <x-backend.section-title>{{ __($moduleTitle) }}</x-backend.section-title>
 
-                <x-slot name="subtitle">
-                    @lang(":moduleName Management Dashboard", ["moduleName" => Str::title($moduleName)])
+            @php
+                $showAccordion = isset(request()->name) || isset(request()->status);
+                $status = request()->get("status", "");
+                $statusSelected = in_array($status, \Modules\{{moduleName}}\Enums\{{moduleName}}Status::getAllValues()) ? $status : "";
+            @endphp
+
+            @include("{$modulePath}.{$moduleName}.includes.search")
+
+            <x-backend.table-control :emptyRecord="$$moduleName->total() == 0">
+                <x-slot:actions>
+                    <x-backend.table-actions :moduleName="$moduleName" />
                 </x-slot>
-                <x-slot name="toolbar">
-                    @can("add_" . $moduleName)
-                        <x-buttons.create
-                            route='{{ route("backend.$moduleName.create") }}'
-                            title="{{__('Create')}} {{ ucwords(Str::singular($moduleName)) }}"
-                        />
-                    @endcan
 
-                    @can("restore_" . $moduleName)
-                        <div class="btn-group">
-                            <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-coreui-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                <i class="fas fa-cog"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route("backend.$moduleName.trashed") }}">
-                                        <i class="fas fa-eye-slash"></i>
-                                        @lang("View trash")
-                                    </a>
-                                </li>
-                                <!-- <li>
-                            <hr class="dropdown-divider">
-                        </li> -->
-                            </ul>
-                        </div>
-                    @endcan
-                </x-slot>
-            </x-backend.section-header>
-
-            <div class="row mt-4">
-                <div class="col">
-                    <table id="datatable" class="table-bordered table-hover table-responsive-sm table">
-                        <thead>
+                @if ($$moduleName->total())
+                    <x-table class="custom-table">
+                        <x-slot:thead>
                             <tr>
-                                <th>#</th>
                                 <th>
-                                    @lang("{{moduleNameLower}}::text.name")
+                                    <x-backend.table-order :field="'name'">
+                                        @lang("{{moduleNameLower}}::text.name")
+                                    </x-backend.table-order>
+                                </th>
+                                <th class="text-center">
+                                    @lang("{{moduleNameLower}}::text.action")
                                 </th>
                                 <th>
                                     @lang("{{moduleNameLower}}::text.slug")
+                                </th>
+                                <th>
+                                    @lang("{{moduleNameLower}}::text.status")
                                 </th>
                                 <th>
                                     @lang("{{moduleNameLower}}::text.updated_at")
@@ -75,68 +54,65 @@
                                 <th>
                                     @lang("{{moduleNameLower}}::text.created_by")
                                 </th>
-                                <th class="text-end">
-                                    @lang("{{moduleNameLower}}::text.action")
-                                </th>
                             </tr>
-                        </thead>
+                        </x-slot>
 
-                        <tbody>
+                        <x-slot:tbody>
                             @foreach ($$moduleName as $moduleNameSingular)
                                 <tr>
                                     <td>
-                                        {{ $moduleNameSingular->id }}
+                                      <div data-toggle="tooltip" title="{{ $moduleNameSingular->name }}">
+                                        {{ Str::limit($moduleNameSingular->name, 15) }}
+                                      </div>
                                     </td>
                                     <td>
-                                        <a href="{{ url("admin/$moduleName", $moduleNameSingular->id) }}">
-                                            {{ $moduleNameSingular->name }}
-                                        </a>
+                                        <x-backend.detail-action
+                                            :moduleName="$moduleName"
+                                            :data="$moduleNameSingular"
+                                        />
                                     </td>
                                     <td>
-                                        {{ $moduleNameSingular->slug }}
+                                        <div data-toggle="tooltip" title="{{ $moduleNameSingular->slug }}">
+                                            {{ Str::limit($moduleNameSingular->slug, 20) }}
+                                        </div>
                                     </td>
-                                    <td>
-                                        {{ $moduleNameSingular->updated_at->diffForHumans() }}
+                                    <td class="text-center">
+                                        {{ \Modules\{{moduleName}}\Enums\{{moduleName}}Status::keyValWithLang()[$moduleNameSingular->status] }}
                                     </td>
-                                    <td>
-                                        {{ $moduleNameSingular->created_by }}
-                                    </td>
-                                    <td class="text-end">
-                                        <a
-                                            href="{!! route("backend.$moduleName.edit", $moduleNameSingular) !!}"
-                                            class="btn btn-sm btn-primary mt-1"
-                                            data-toggle="tooltip"
-                                            title="Edit {{ ucwords(Str::singular($moduleName)) }}"
-                                        >
-                                            <i class="fas fa-wrench"></i>
-                                        </a>
-                                        <a
-                                            href="{!! route("backend.$moduleName.show", $moduleNameSingular) !!}"
-                                            class="btn btn-sm btn-success mt-1"
-                                            data-toggle="tooltip"
-                                            title="Show {{ ucwords(Str::singular($moduleName)) }}"
-                                        >
-                                            <i class="fas fa-tv"></i>
-                                        </a>
-                                    </td>
+                                    <td>{{ $moduleNameSingular->created_at->format("Y/m/d") }}</td>
+                                    <td>{{ $moduleNameSingular->updated_at->format("Y/m/d") }}</td>
                                 </tr>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-7">
-                    <div class="float-left">Total {{ $$moduleName->total() }} {{ ucwords($moduleName) }}</div>
-                </div>
-                <div class="col-5">
-                    <div class="float-end">
-                        {!! $$moduleName->render() !!}
-                    </div>
-                </div>
-            </div>
+                        </x-slot>
+                    </x-table>
+
+                   {{
+                       $$moduleName
+                           ->appends(
+                               array_merge(
+                                   [
+                                       "name" => request()->get("name", ""),
+                                       "status" => $statusSelected,
+                                       "per_page" => request()->get("per_page", ""),
+                                   ],
+                                   collect(request()->get("order_by", []))
+                                       ->mapWithKeys(fn ($value, $key) => ["order_by[$key]" => $value])
+                                       ->toArray(),
+                               ),
+                           )
+                           ->onEachSide(1)
+                           ->links()
+                   }}
+                @else
+                    <div class="font-weight-bolder mt-28 text-center text-3xl">@lang("No data")</div>
+                @endif
+            </x-backend.table-control>
         </div>
     </div>
 @endsection
+
+@push("after-scripts")
+    <script type="module">
+        window.moduleName = @json($moduleName);
+    </script>
+@endpush
