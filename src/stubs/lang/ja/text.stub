@@ -11,5 +11,10 @@ return [
     'updated_by' => 'Updated By',
     'deleted_by' => 'Deleted By',
     'action' => 'Action',
-
+    'placeholder_name' => 'Please fill out name',
+    'enum_status' => [
+        0 => '無効',
+        1 => '有効',
+        2 => 'ドラフト',
+    ],
 ];

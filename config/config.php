@@ -43,6 +43,7 @@ return [
             'request_store_backend' => ['Http/Requests/Backend/StorestubRequest.stub', 'Http/Requests/Backend/StorestubRequest.php'],
             'request_update_backend' => ['Http/Requests/Backend/UpdatestubRequest.stub', 'Http/Requests/Backend/UpdatestubRequest.php'],
             'views_backend_index' => ['Resources/views/backend/stubViews/index.blade.stub', 'Resources/views/backend/stubViews/index.blade.php'],
+            'views_backend_block_search' => ['Resources/views/backend/stubViews/includes/search.blade.stub', 'Resources/views/backend/stubViews/includes/search.blade.php'],
             'views_backend_index_datatable' => ['Resources/views/backend/stubViews/index_datatable.blade.stub', 'Resources/views/backend/stubViews/index_datatable.blade.php'],
             'views_backend_create' => ['Resources/views/backend/stubViews/create.blade.stub', 'Resources/views/backend/stubViews/create.blade.php'],
             'views_backend_form' => ['Resources/views/backend/stubViews/form.blade.stub', 'Resources/views/backend/stubViews/form.blade.php'],

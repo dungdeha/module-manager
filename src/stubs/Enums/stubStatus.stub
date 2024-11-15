@@ -37,4 +37,14 @@ enum {{moduleName}}Status: string
 
         return $array;
     }
+
+    public static function keyValWithLang(): array
+    {
+        $array = [];
+        foreach (self::cases() as $case) {
+            $array[$case->value] = __('{{moduleNameLower}}::text.enum_status.' . $case->value);
+        }
+
+        return $array;
+    }
 }

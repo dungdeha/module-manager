@@ -209,6 +209,11 @@ class ModuleBuildCommand extends Command
                 $filePath = str_replace('ListstubTest.php', $value, $filePath);
                 break;
 
+            case 'views_backend_block_search':
+                $value = $moduleNameLowerPlural;
+                $filePath = str_replace('stubViews', $value, $filePath);
+                break;
+
             case 'test_feature_backend_create':
                 $value = 'Create'.$moduleName.'Test.php';
                 $filePath = str_replace('CreatestubTest.php', $value, $filePath);

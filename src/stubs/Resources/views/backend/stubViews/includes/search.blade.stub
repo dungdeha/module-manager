@@ -1,0 +1,26 @@
+<x-backend.section-search :moduleName="$moduleName" :showAccordion="$showAccordion">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 xl:grid-cols-5">
+        <div>
+            <x-input-label for="name" :value="__('{{moduleNameLower}}::text.name')" />
+            <x-text-input
+                class="mt-1 block w-full"
+                id="name"
+                name="name"
+                :value="request()->get('name', '')"
+                autocomplete="title"
+                :placeholder="__('{{moduleNameLower}}::text.placeholder_name')"
+            />
+        </div>
+
+        <div>
+            <x-input-label for="status" :value="__('{{moduleNameLower}}::text.status')" />
+            <x-select
+                class="mt-1 block w-full"
+                id="status"
+                name="status"
+                :valueSelected="$status"
+                :options="\Modules\{{moduleName}}\Enums\{{moduleName}}Status::keyValWithLang()"
+            />
+        </div>
+    </div>
+</x-backend.section-search>

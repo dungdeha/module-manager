@@ -22,4 +22,18 @@ class {{moduleName}} extends BaseModel
     {
         return \Modules\{{moduleName}}\database\factories\{{moduleName}}Factory::new();
     }
+
+    public function scopeFilterByName($query, $param)
+    {
+        return $query->when(isset($param) && $param !== '', function ($q) use ($param) {
+            $q->where('name', 'like', "%{$param}%");
+        });
+    }
+
+    public function scopeFilterByStatus($query, $param)
+    {
+        return $query->when(isset($param) && $param !== '', function ($q) use ($param) {
+            $q->where('status', $param);
+        });
+    }
 }
