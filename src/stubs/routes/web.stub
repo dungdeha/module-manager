@@ -58,7 +58,5 @@ Route::group(['namespace' => '\Modules\{{moduleName}}\Http\Controllers\Backend',
     $controllerName = '{{moduleNamePlural}}Controller';
     Route::get("$moduleName/index_list", ['as' => "$moduleName.index_list", 'uses' => "$controllerName@index_list"]);
     Route::get("$moduleName/index_data", ['as' => "$moduleName.index_data", 'uses' => "$controllerName@index_data"]);
-    Route::get("$moduleName/trashed", ['as' => "$moduleName.trashed", 'uses' => "$controllerName@trashed"]);
-    Route::patch("$moduleName/trashed/{id}", ['as' => "$moduleName.restore", 'uses' => "$controllerName@restore"]);
     Route::resource("$moduleName", "$controllerName");
 });

@@ -43,7 +43,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="{{ route("backend.$moduleName.trashed") }}">
+                                    <a class="dropdown-item" href="#">
                                         <i class="fas fa-eye-slash"></i>
                                         @lang("View trash")
                                     </a>

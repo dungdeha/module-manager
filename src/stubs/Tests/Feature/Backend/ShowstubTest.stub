@@ -1,9 +1,10 @@
 <?php
 
-namespace Feature\Backend;
+namespace Modules\{{moduleName}}\Tests\Feature\Backend;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\{{moduleName}}\Models\{{moduleName}};
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class Show{{moduleName}}Test extends TestCase
@@ -23,5 +24,15 @@ class Show{{moduleName}}Test extends TestCase
         $response = $this->get('admin/{{moduleNameLowerPlural}}/'.${{moduleNameLower}}->id);
         $response->assertSee(${{moduleNameLower}}->name);
         $response->assertSee(${{moduleNameLower}}->description);
+    }
+
+    public function test_{{moduleNameLower}}_detail_page_not_found(): void
+    {
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}}Id = -1;
+
+        $response = $this->get(route('backend.{{moduleNameLowerPlural}}.show', ${{moduleNameLower}}Id));
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 }
