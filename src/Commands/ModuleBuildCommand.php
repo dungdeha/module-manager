@@ -224,6 +224,16 @@ class ModuleBuildCommand extends Command
                 $filePath = str_replace('EditstubTest.php', $value, $filePath);
                 break;
 
+            case 'test_feature_backend_show':
+                $value = 'Show'.$moduleName.'Test.php';
+                $filePath = str_replace('ShowstubTest.php', $value, $filePath);
+                break;
+
+            case 'test_feature_backend_delete':
+                $value = 'Delete'.$moduleName.'Test.php';
+                $filePath = str_replace('DeletestubTest.php', $value, $filePath);
+                break;
+
             case 'test_feature_frontend_list':
                 $value = 'List'.$moduleName.'Test.php';
                 $filePath = str_replace('ListstubTest.php', $value, $filePath);
@@ -290,11 +300,6 @@ class ModuleBuildCommand extends Command
                 break;
 
             case 'views_backend_edit':
-                $value = $moduleNameLowerPlural;
-                $filePath = str_replace('stubViews', $value, $filePath);
-                break;
-
-            case 'views_backend_trash':
                 $value = $moduleNameLowerPlural;
                 $filePath = str_replace('stubViews', $value, $filePath);
                 break;

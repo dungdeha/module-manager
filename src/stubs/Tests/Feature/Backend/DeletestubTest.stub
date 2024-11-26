@@ -1,0 +1,41 @@
+<?php
+
+namespace Modules\{{moduleName}}\Tests\Feature\Backend;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\{{moduleName}}\Models\{{moduleName}};
+use Symfony\Component\HttpFoundation\Response;
+use Tests\TestCase;
+
+class Delete{{moduleName}}Test extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function test_delete_{{moduleNameLower}}_page_not_found(): void
+    {
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}}Id = -1;
+
+        $response = $this->delete(route('backend.{{moduleNameLowerPlural}}.destroy', ${{moduleNameLower}}Id));
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    /** @test */
+    public function test_delete_{{moduleNameLower}}_successfully()
+    {
+        $this->loginAsSuperAdmin();
+        ${{moduleNameLower}} = {{moduleName}}::factory()->create();
+
+        $response = $this->delete(route('backend.{{moduleNameLowerPlural}}.destroy', ${{moduleNameLower}}));
+
+        $response->assertRedirect(route('backend.{{moduleNameLowerPlural}}.index'));
+        $response->assertSessionHas('flash_notification');
+
+        $this->assertTrue(
+            session('flash_notification')->contains(fn ($message) => $message->message === __('{{moduleNameLower}}::text.module_lower').__(' Deleted Successfully')));
+
+        $this->assertSoftDeleted('{{moduleNameLowerPlural}}', ['id' => ${{moduleNameLower}}->id]);
+    }
+}
