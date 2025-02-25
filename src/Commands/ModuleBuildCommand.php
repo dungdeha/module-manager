@@ -171,7 +171,7 @@ class ModuleBuildCommand extends Command
         switch ($filetype) {
             case 'command':
                 $value = $moduleName.'Command.php';
-                $filePath = str_replace('StubCommand.php', $value, $filePath);
+                $filePath = str_replace('stubCommand.php', $value, $filePath);
                 break;
 
             case 'database':
